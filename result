@@ -1,0 +1,25 @@
+G = true; // from the initial facts
+
+V = !V E+F
+E = C
+C = A | B
+A = true
+B = true
+C = true
+E = true
+F = A + !B
+F = true + false
+F = false
+!V = true + false
+!V = false
+V = true
+
+X = V ^ W, C | D // on connais C donc 1 de plus que dans l'autre on cherche D en premier
+D = A + B + C
+D = true + true + true
+D = true
+X = true | true
+X = true
+
+
+Resut : G = true V = true X = true

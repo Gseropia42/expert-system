@@ -4,14 +4,12 @@ import sys
 from functions import read_a_line, print_results
 from resolver import *
 
-
-
 #MAIN
 print("Bienvenue dans ExSy !")
 
 filetext = sys.argv[1:]
 if not filetext or len(filetext) > 1:
-    print ("Erreur ! Merci de ne passer qu'un seul paramètre à ExSy")
+    print("Erreur Merci de ne passer qu'un seul parametre a ExSy")
     sys.exit(0)
 
 print("J'analyse votre fichier !")
