@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-#tableaux pour stcker les reponses initiales, les conditions,et les réponses
+#tableaux pour stocker les reponses initiales, les conditions,et les réponses
 answers_list = []
 conditions_list = []
 facts_list = []
+letter_value = {};
 
-
-# Verifie si une valeur est vraie ou pas, la conction n'est évidemmeent pas fini,
+# Verifie si une valeur est vraie ou pas, la fonction n'est évidemmeent pas fini,
 # la ca vérifie juste danns le tableau
 def check_true(val):
     if (val == 1):
@@ -38,12 +38,15 @@ def check_result(val1, val2 = None, operand = None):
 #parse les conditions
 def stockconditions(original_line):
     global conditions_list
-    condition = original_line.split("#")[0]
+    for letter in original_line:
+        if (letter not in letter_value and letter.isupper()):
+            letter_value[letter] = "false"
+    condition = original_line.split("\n")[0]
 
     condition_block = condition.split("=>")
     if (len(condition_block) != 2):
         return 0
-    line_list = [condition_block[0], condition_block[1]]
+    line_list = [list(condition_block[0]), list(condition_block[1])]
     conditions_list.append(line_list)
     return 1
 
@@ -57,7 +60,7 @@ def stockfacts(line):
     for letter in line:
         if (letter == '?'):
             continue
-        if (letter == "#"):
+        if (letter == "#" or letter == '\n'):
             return 1
         if (not letter.isupper()):
             print("Erreur : Les faits ne doivent contenir que des lettres majuscules")
@@ -65,6 +68,8 @@ def stockfacts(line):
         if (letter in facts_list):
             print("Erreur : Une valeur des faits a été déclarée 2 fois")
             return 0
+        if (letter not in letter_value):
+            letter_value[letter] = "false"
         facts_list.append(letter)
     return 1
 
@@ -77,14 +82,15 @@ def stockanswers(line):
     for letter in line:
         if (letter == '='):
             continue
-        if (letter == '#'):
+        if (letter == '#' or letter == '\n'):
             return 1
         if (not letter.isupper()):
             print("Erreur : Les réponses ne doivent contenir que des lettres majuscules")
             return 0
         if (letter in answers_list):
             print("erreur : Une valeur des réponses a été déclarée 2 fois")
-            return 0
+            return 0    
+        letter_value[letter] = "true"    
         answers_list.append(letter)
     return 1
 
@@ -103,7 +109,17 @@ def read_a_line(original_line):
 
 #pas fini ofc, la ca rint que le tableau pour l'instant
 def print_results():
-    print (answers_list)
-    print (facts_list)
+    print("Réponse : \n")
+    print(answers_list)
+    print("\nFact : \n")
+    print(facts_list)
+    print("\nLes conditions : \n")
     for condition in conditions_list:
         print(condition)
+    print("\nLes lettres :")
+    print(letter_value)
+
+def print_results_facts():
+    print("Le résultat est :")
+    for fact in facts_list:
+        print(fact, " : ", letter_value[fact])
