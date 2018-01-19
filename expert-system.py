@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import sys
 
-from functions import read_a_line, print_results
-from resolver import *
+from functions import read_a_line, print_results, print_results_facts, letter_value, answers_list, conditions_list, facts_list
+from resolver import find_solution
 
 #MAIN
 print("Bienvenue dans ExSy !")
@@ -22,4 +22,7 @@ with open(filetext[0], 'r') as file:
             sys.exit(0)
         line = file.readline()
 print_results()
+print("\n")
+find_solution(letter_value, facts_list, conditions_list, answers_list)
+print_results_facts()
 # resolve
