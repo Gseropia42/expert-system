@@ -4,7 +4,7 @@
 answers_list = []
 conditions_list = []
 facts_list = []
-letter_value = {};
+letter_value = {}
 
 # Verifie si une valeur est vraie ou pas, la fonction n'est évidemmeent pas fini,
 # la ca vérifie juste danns le tableau
