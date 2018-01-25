@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 from functions import check_result
 
@@ -12,7 +13,6 @@ def find_value_left_letter(conditions2, letter_value, conditions_list):
                 print(element_value, " append true")
                 element_value.append("true")
             else:
-                print("on va chercher : ", condition)
                 value = find_letter_in_condition(conditions_list, condition, letter_value)
                 print("retour1 : ", value, " = ", condition)  # true or false de la lettre on cherche la suivante.
                 print(element_value, " append ", value)
@@ -33,7 +33,6 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
             if conditions[-1][0] == fact:
                 print(conditions[-2], "pour ", fact)
                 value = find_value_left_letter(conditions[-2], letter_value, conditions_list)
-                # check la taille de value pour faire des boucles dessus
                 if len(value) > 3:
                     while len(value) > 3:
                         value[0] = check_result(value[0], value[2], value[1])
@@ -47,6 +46,7 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
         else:
             for condition1 in conditions[-1]:
                 if condition1 == fact:
+                    # Si on trouve notre bonheur ici, il faudra aussi calculer les autres pour savoir le résultat éxact
                     print(conditions[-2], "pour ", fact)
                     value = find_value_left_letter(conditions[-2], letter_value, conditions_list)
                     print("retour3 : ", value[0], value[1], value[2], " = ", fact)
