@@ -12,8 +12,14 @@ if not filetext or len(filetext) > 1:
     print("Erreur Merci de ne passer qu'un seul parametre a ExSy")
     sys.exit(0)
 
-print("J'analyse votre fichier !")
 
+try:
+    f = open(filetext[0], 'r')
+except IOError:
+    print ("Le fichier {0} n'existe pas".format(filetext[0]))
+    sys.exit(0)
+
+print("J'analyse votre fichier !")
 with open(filetext[0], 'r') as file:
     line = file.readline()
     while line:
