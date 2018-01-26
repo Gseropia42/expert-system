@@ -4,7 +4,7 @@
 from functions import check_result
 
 
-def find_value_left_letter(conditions2, letter_value, conditions_list):
+def find_value_letter(conditions2, letter_value, conditions_list):
     element_value = []
     for condition in conditions2:
         print(condition)
@@ -32,32 +32,44 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
         if len(conditions[-1]) == 1:
             if conditions[-1][0] == fact:
                 print(conditions[-2], "pour ", fact)
-                value = find_value_left_letter(conditions[-2], letter_value, conditions_list)
-                if len(value) > 3:
-                    while len(value) > 3:
-                        value[0] = check_result(value[0], value[2], value[1])
-                        del value[1:2]
+                value = find_value_letter(conditions[-2], letter_value, conditions_list)
+                while len(value) > 3:
+                    value[0] = check_result(value[0], value[2], value[1])
+                    del value[1:2]
                 print("retour2 : ", value[0], value[1], value[2], " = ", fact)
-                result = check_result(value[0], value[2], value[1])
-                letter_value[fact] = result
+                letter_value[fact] = check_result(value[0], value[2], value[1])
                 print("fact : ", fact, "value : ", letter_value[fact])
                 print(letter_value)
-                return result
+                return letter_value[fact]
         else:
+            find = "false"
             for condition1 in conditions[-1]:
                 if condition1 == fact:
+                    find = "true"
                     # Si on trouve notre bonheur ici, il faudra aussi calculer les autres pour savoir le résultat éxact
                     print(conditions[-2], "pour ", fact)
-                    value = find_value_left_letter(conditions[-2], letter_value, conditions_list)
+                    value = find_value_letter(conditions[-2], letter_value, conditions_list)
                     print("retour3 : ", value[0], value[1], value[2], " = ", fact)
-                    result = check_result(value[0], value[2], value[1])
-                    letter_value[fact] = result
+                    letter_value[fact] = check_result(value[0], value[2], value[1])
                     print("fact : ", fact, "value : ", letter_value[fact])
-                    return result
+                    print(letter_value)
+                    return letter_value[fact]
+            if find == "true":
+                for index, condition1 in conditions[-1]:
+                    if condition1 != fact:
+                        value = find_value_letter(condition1, letter_value, conditions_list)
+                        # Si on a A + B + C on va faire A + B et supprimer + B remplacer A par le résultat (true or false)
+                        while len(value) > 3:
+                            value[0] = check_result(value[0], value[2], value[1])
+                            del value[1:2]
+                        # Et ici nous allons fait true/false + C
+                        letter_value[condition1] = check_result(value[0], value[2], value[1])
+                        conditions[-1][index] = letter_value[condition1]
+                    # faire le calcul global pour finir
     return "false"
 
 
-def find_solution(letter_value, facts_list, conditions_list, answers_list):
+def find_solution(letter_value, facts_list, conditions_list):
     for fact in facts_list:
         if letter_value[fact] != "true":
             print("find the solution !", fact)

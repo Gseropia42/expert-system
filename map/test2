@@ -1,11 +1,33 @@
-C => E 
-A + B + C => D 
-A | B => C 
-A + !B => F 
-C | !G => H 
-V ^ W => X 
-A + B => Y + Z 
-C | D => X | V 
-E + F => !V 
+C => E
+A + B + C => D
+A | B => C
+A + !B => F
+C | !G => H
+V ^ W => X
+A + B => Y + Z
+C | D => X | V
+E + F => !V
 =ABG
 ?GVX
+
++
+
+true => true + X ; X = true
+true => false + X ; // impossible
+false => false + X ; X = false
+false => true + X ; X = false
+
+|
+
+true => true | X ; X = true/false
+true => false | X ; X = true
+false => true | X ; // impossible
+false = > false | X ; X = true/false
+
+^
+
+true => true ^ X ; X = false
+true => false ^ X ; X = true
+false => true ^ X ; X = true
+false => false ^ X ; X = false
+
