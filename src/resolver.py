@@ -6,17 +6,26 @@ from functions import check_result
 
 def find_value_letter(conditions2, letter_value, conditions_list):
     element_value = []
-    for condition in conditions2:
+    for index, condition in conditions2:
         print(condition)
         if condition.isupper():
             if letter_value[condition] == "true":
-                print(element_value, " append true")
-                element_value.append("true")
+                if conditions2[index - 1] == "!":
+                    print(element_value, " append false")
+                    element_value.append("false")
+                else:
+                    print(element_value, " append true")
+                    element_value.append("true")
             else:
                 value = find_letter_in_condition(conditions_list, condition, letter_value)
                 print("retour1 : ", value, " = ", condition)  # true or false de la lettre on cherche la suivante.
-                print(element_value, " append ", value)
-                element_value.append(value)
+                if conditions2[index - 1] == "!":
+                    value = "true" if value == "false" else "false"
+                    print(element_value, " append ", value)
+                    element_value.append(value)
+                else:
+                    print(element_value, " append ", value)
+                    element_value.append(value)
         else:
             print(element_value, " append ", condition)
             element_value.append(condition)
