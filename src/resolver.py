@@ -12,6 +12,14 @@ def len_array(array):
     return length
 
 
+def replace_exclamation_point(array):
+    length = 0
+    for index in array:
+        if index == '!':
+            array[length + 1] = 'true' if array[length + 1] == 'false' else 'false'
+        length += 1
+    return array
+
 def find_value_letter(conditions2, letter_value, conditions_list):
     element_value = []
     index = 0
@@ -53,17 +61,17 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
     for conditions in conditions_list:
         if len(conditions[-1]) == 1:
             if conditions[-1][0] == fact:
-                print(len_array(conditions[0]), save_len, index, save_index)
+                # print(len_array(conditions[0]), save_len, index, save_index)
                 if len_array(conditions[0]) < save_len or save_len == 0:
-                    print("in1")
+                    # print("in1")
                     save_index = index
                     save_len = len(conditions[0])
         else:
             for condition1 in conditions[-1]:
                 if condition1 == fact:
-                    print(len_array(conditions[0]), len_array(conditions[-1]), save_len, index, save_index)
+                    # print(len_array(conditions[0]), len_array(conditions[-1]), save_len, index, save_index)
                     if (len_array(conditions[0]) + len_array(conditions[-1]) - 1) < save_len or save_len == 0:
-                        print("in")
+                        # print("in")
                         save_index = index
                         save_len = (len_array(conditions[0]) + len_array(conditions[-1]) - 1)
         index += 1
@@ -110,11 +118,18 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
     if len(conditions_list[save_index][-1]) == 1:
         print(conditions_list[save_index][-2], "pour ", fact)
         value = find_value_letter(conditions_list[save_index][-2], letter_value, conditions_list)
+        print (value)
+        if len(value) != len_array(value):
+            value = replace_exclamation_point(value)
         while len(value) > 3:
             value[0] = check_result(value[0], value[2], value[1])
             del value[1:2]
-        print("retour2 : ", value[0], value[1], value[2], " = ", fact)
-        letter_value[fact] = check_result(value[0], value[2], value[1])
+        if len(value) == 1:
+            print ("value[0] : ", value[0])
+            letter_value[fact] = value[0]
+        else:
+            print("retour2 : ", value[0], value[1], value[2], " = ", fact)
+            letter_value[fact] = check_result(value[0], value[2], value[1])
         print("fact : ", fact, "value : ", letter_value[fact])
         print(letter_value)
         return letter_value[fact]
@@ -137,6 +152,8 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
                 if condition1 != fact:
                     value = find_value_letter(condition1, letter_value, conditions_list)
                     # Si on a A + B + C on va faire A + B et supprimer + B remplacer A par le résultat (true or false) on aura true/false + C
+                    if len(value) != len_array(value):
+                        value = replace_exclamation_point(value)
                     while len(value) > 3:
                         value[0] = check_result(value[0], value[2], value[1])
                         del value[1:2]
@@ -145,7 +162,7 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
                     conditions_list[save_index][-1][index] = letter_value[condition1]
                     # faire le calcul global pour finir
                 index += 1
-        return "false"
+    return "false"
 
 
 def find_solution(letter_value, facts_list, conditions_list):
