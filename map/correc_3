@@ -1,0 +1,9 @@
+B + C => A
+D ^ E => B
+B => C
+
+= # A false
+=D # A true
+=E # A true
+=DE # A false
+?A

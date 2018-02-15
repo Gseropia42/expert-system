@@ -26,15 +26,24 @@ def check_result(val1, val2=None, operand=None):
     print("val2", val2)
     if not operand:
         print("pouet")
-    if operand == '+' and val1 == "true" and val2 == "true":
-        return "true"
-    if operand == '|' and val1 == "true" or val2 == "true":
-        return "true"
-    if operand == '^' and val1 == "true" or val2 == "true":
+    if operand == '+':
         if val1 == "true" and val2 == "true":
-            return "false"
-        else:
             return "true"
+        else:
+            return "false"
+    if operand == '|':
+        if val1 == "true" or val2 == "true":
+            return "true"
+        else:
+            return "false"
+    if operand == '^':
+        if val1 == "true" or val2 == "true":
+            if val1 == "true" and val2 == "true":
+                return "false"
+            else:
+                return "true"
+        else:
+            return "false"
     if not operand and check_true(val1):
         print("were in")
         print(val1)

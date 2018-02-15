@@ -1,0 +1,19 @@
+A | B + C => E
+(F + G) + H => E
+
+= # E false
+=A # E true
+=B # E false
+=C # E false
+=AB # E false
+=BC # E true
+
+=F # E false
+=G # E false
+=H # E false
+=FH # E true
+=GH # E true
+
+?E
+
+TODO : A GÉRER LES PARENTHÈSES
