@@ -15,5 +15,3 @@ A | B + C => E
 =GH # E true
 
 ?E
-
-TODO : A GÉRER LES PARENTHÈSES
