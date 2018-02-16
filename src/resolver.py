@@ -7,7 +7,7 @@ from functions import check_result
 def len_array(array):
     length = 0
     for index in array:
-        if index != '!':
+        if index != '!' and index != '(' and index != ')':
             length += 1
     return length
 
@@ -20,6 +20,65 @@ def replace_exclamation_point(array):
             del array[length]
         length += 1
     return array
+
+
+def move_parentheses(array, debut_1, debut_2, fin):
+    print ("debut move_parentheses : ", array, debut_1, debut_2, fin)
+    if debut_2 == -1:
+        del array[debut_1]
+        del array[fin - 1]
+        debut_1 -= 1
+        fin -= 1
+        while debut_1 < fin:
+            array.insert(0, array.pop(debut_1))
+            print ("here1 ", array, debut_1, fin)
+            debut_1 += 1
+    else:
+        del array[debut_2]
+        del array[fin - 1]
+        debut_1 += 1
+        debut_2 -= 1
+        fin -= 1
+        print (array)
+        while debut_2 < fin:
+            array.insert(debut_1, array.pop(debut_2))
+            print ("here2 ", array, debut_1, debut_2, fin)
+            debut_2 += 1
+    print (array)
+    return array
+
+
+def replace_and_move_parentheses(array):
+    print ("debut replace parentheses : ", array)
+    while '(' in array or ')' in array:
+        save_index_debut_1 = -1
+        save_index_debut_2 = -1
+        save_index_fin = -1
+        length = 0
+        for index in array:
+            if index == '(':
+                if save_index_debut_1 == -1:
+                    save_index_debut_1 = length
+                elif save_index_debut_2 == -1:
+                    save_index_debut_2 = length
+                else:
+                    save_index_debut_1 = save_index_debut_2
+                    save_index_debut_2 = length
+            if index == ')' and save_index_fin == -1:
+                save_index_fin = length
+            length += 1
+        if save_index_debut_1 == 0 and save_index_debut_2 == -1:
+            del array[save_index_fin]
+            del array[0]
+            print (array)
+            return array
+        array = move_parentheses(array, save_index_debut_1, save_index_debut_2, save_index_fin)
+    return array
+
+#E + (F + (G + (H + I)))
+#E + (F + (H + I + G))
+#E + (H + I + G + F)
+#H + I + G + F + E
 
 def find_value_letter(conditions2, letter_value, conditions_list):
     element_value = []
@@ -80,9 +139,15 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
         if len(value) != len_array(value):
             print ("replace_exclamation_point")
             value = replace_exclamation_point(value)
+        if len(value) != len_array(value):
+            print ("replace and move parentheses")
+            value = replace_and_move_parentheses(value)
         while len(value) > 3:
             value[0] = check_result(value[0], value[2], value[1])
-            del value[1:2]
+            print(value)
+            del value[2]
+            del value[1]
+            print(value)
         if len(value) == 1:
             print ("value[0] : ", value[0])
             letter_value[fact] = value[0]
@@ -112,10 +177,15 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
                     value = find_value_letter(condition1, letter_value, conditions_list)
                     # Si on a A + B + C on va faire A + B et supprimer + B remplacer A par le résultat (true or false) on aura true/false + C
                     if len(value) != len_array(value):
+                        print ("replace_exclamation_point")
                         value = replace_exclamation_point(value)
+                    if len(value) != len_array(value):
+                        print ("replace and move parentheses")
+                        value = replace_and_move_parentheses(value)
                     while len(value) > 3:
                         value[0] = check_result(value[0], value[2], value[1])
-                        del value[1:2]
+                        del value[2]
+                        del value[1]
                     # Et ici nous allons fait true/false + C
                     letter_value[condition1] = check_result(value[0], value[2], value[1])
                     conditions_list[save_index][-1][index] = letter_value[condition1]
