@@ -90,7 +90,7 @@ def find_value_letter(conditions2, letter_value, conditions_list):
                 print(element_value, " append true")
                 element_value.append("true")
             else:
-                value = find_letter_in_condition(conditions_list, condition, letter_value)
+                value = find_letter_in_condition(conditions_list, condition, letter_value, 0)
                 print("retour1 : ", value, " = ", condition)  # true or false de la lettre on cherche la suivante.
                 print(element_value, " append ", value)
                 element_value.append(value)
@@ -104,10 +104,9 @@ def find_value_letter(conditions2, letter_value, conditions_list):
     return element_value
 
 
-def find_letter_in_condition(conditions_list, fact, letter_value):
+def find_letter_in_condition(conditions_list, fact, letter_value, save_index):
     print("On cherche pour la lettre : ", fact)
     save_len = 0
-    save_index = 0
     index = 0
     find = "false"
     for conditions in conditions_list:
@@ -129,8 +128,8 @@ def find_letter_in_condition(conditions_list, fact, letter_value):
                         save_index = index
                         save_len = (len_array(conditions[0]) + len_array(conditions[-1]) - 1)
         index += 1
-    if find == "false":
-        return "false"
+    if find == "false" and save_index == 0:
+        return find_letter_in_condition(conditions_list, fact, letter_value, save_index + 1)
     print("la taille est de : ", save_len, "et l'index est : ", save_index, conditions_list[save_index])
     if len(conditions_list[save_index][-1]) == 1:
         print(conditions_list[save_index][-2], "pour ", fact)
@@ -198,5 +197,5 @@ def find_solution(letter_value, facts_list, conditions_list):
     for fact in facts_list:
         if letter_value[fact] != "true":
             print("find the solution !", fact)
-            result = find_letter_in_condition(conditions_list, fact, letter_value)
+            result = find_letter_in_condition(conditions_list, fact, letter_value, 0)
             print ("result : ", result)
